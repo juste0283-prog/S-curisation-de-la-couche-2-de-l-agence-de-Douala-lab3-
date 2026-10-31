@@ -1,0 +1,20 @@
+[admin@CHR] > /export 
+# 2026-10-30 02:25:37 by RouterOS 7.23.8
+# system id = J5bE2GHAvSI
+#
+/interface ethernet
+set [ find default-name=ether1 ] disable-running-check=no
+set [ find default-name=ether2 ] disable-running-check=no
+set [ find default-name=ether3 ] disable-running-check=no
+set [ find default-name=ether4 ] disable-running-check=no
+/ip pool
+add name=pool-box ranges=192.168.8.100-192.168.8.200
+/ip dhcp-server
+add address-pool=pool-box interface=ether1 name=dhcp-box
+/ip address
+add address=192.168.8.1/24 interface=ether1 network=192.168.8.0
+/ip dhcp-client
+add interface=ether1 name=client1
+/ip dhcp-server network
+add address=192.168.8.0/24 gateway=192.168.8.1
+[admin@CHR] > 

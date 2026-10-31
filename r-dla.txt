@@ -1,0 +1,32 @@
+/interface ethernet
+set [ find default-name=ether1 ] disable-running-check=no
+set [ find default-name=ether2 ] disable-running-check=no
+set [ find default-name=ether3 ] disable-running-check=no
+set [ find default-name=ether4 ] disable-running-check=no
+/interface vlan
+add interface=ether1 name=vlan10 vlan-id=10
+add interface=ether1 name=vlan20 vlan-id=20
+add interface=ether1 name=vlan40 vlan-id=40
+add interface=ether1 name=vlan50 vlan-id=50
+add interface=ether1 name=vlan99 vlan-id=99
+/ip pool
+add name=pool-v10 ranges=10.20.10.100-10.20.10.200
+add name=pool-v20 ranges=10.20.20.100-10.20.20.200
+add name=pool-v50 ranges=10.20.50.100-10.20.50.200
+/ip dhcp-server
+add address-pool=pool-v10 interface=vlan10 name=dhcp-v10
+add address-pool=pool-v20 interface=vlan20 name=dhcp-v20
+add address-pool=pool-v50 interface=vlan50 name=dhcp-v50
+/ip address
+add address=10.20.10.1/24 interface=vlan10 network=10.20.10.0
+add address=10.20.20.1/24 interface=vlan20 network=10.20.20.0
+add address=10.20.40.1/24 interface=vlan40 network=10.20.40.0
+add address=10.20.50.1/24 interface=vlan50 network=10.20.50.0
+add address=10.20.99.1/24 interface=vlan99 network=10.20.99.0
+/ip dhcp-client
+add interface=ether1 name=client1
+/ip dhcp-server network
+add address=10.20.10.0/24 dns-server=203.0.113.10 gateway=10.20.10.1
+add address=10.20.20.0/24 dns-server=203.0.113.10 gateway=10.20.20.1
+add address=10.20.50.0/24 dns-server=203.0.113.10 gateway=10.20.50.1
+[admin@CHR] /ip/dhcp-server> 

@@ -1,0 +1,235 @@
+sh running-config
+           ^
+% Invalid input detected at '^' marker.
+
+SW-DLA>en
+Password: 
+Password: 
+SW-DLA#sh running-config
+Building configuration...
+
+Current configuration : 5951 bytes
+!
+! Last configuration change at 21:27:06 UTC Thu Oct 29 2026
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname SW-DLA
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$7Lv3$uD7E7YTSWDhu7rm8v2BMM0
+!
+username admin privilege 15 secret 5 $1$e6mB$edlu1kALBb7adtN23g2lx.
+no aaa new-model
+ip arp inspection vlan 10,20,40,50
+ip arp inspection validate src-mac dst-mac ip 
+ip arp inspection filter ARP-STATIQUE vlan  40
+!         
+!         
+!         
+ip dhcp snooping vlan 10,20,50
+no ip dhcp snooping information option
+ip dhcp snooping
+no ip domain-lookup
+ip domain-name dla.local
+ip cef    
+no ipv6 cef
+!         
+!         
+errdisable recovery cause bpduguard
+errdisable recovery cause psecure-violation
+!         
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 1,10,20,40,50,99 priority 4096
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         interface GigabitEthernet0/0
+ description TRUNK-VERS-DLA
+ switchport trunk allowed vlan 10,20,40,50,99
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ negotiation auto
+ ip dhcp snooping trust
+!         
+interface GigabitEthernet0/1
+ description PC-GUICHET
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security
+ negotiation auto
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+!         
+interface GigabitEthernet0/2
+ description CLIENT-DLA
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security
+ negotiation auto
+
+ negotiation auto
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+!         
+interface GigabitEthernet0/3
+ description CAMERA-HALL
+ switchport access vlan 40
+ switchport mode access
+ switchport nonegotiate
+ negotiation auto
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!         
+interface GigabitEthernet1/0
+ description PORT-DE-TEST-4G
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ shutdown 
+ negotiation auto
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+!         
+interface GigabitEthernet1/1
+ description SERVEUR-RADIUS
+ switchport access vlan 99
+ switchport mode access
+ switchport nonegotiate
+ negotiation auto
+!         
+interface GigabitEthernet1/2
+ description intrus
+ interface GigabitEthernet1/2
+ description intrus
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ shutdown 
+ negotiation auto
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+!         
+interface GigabitEthernet1/3
+ description SW-PIRATE
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security
+ negotiation auto
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!         
+interface GigabitEthernet2/0
+ description SALLE-ATTENTE
+ switchport access vlan 10
+ switchport mode access
+
+  switchport nonegotiate
+ shutdown 
+ negotiation auto
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+ ip dhcp snooping limit rate 15
+!         
+interface GigabitEthernet2/1
+ description INUTILISE
+ switchport access vlan 999
+ switchport mode access
+ switchport nonegotiate
+ shutdown 
+ negotiation auto
+!         
+interface Vlan1
+ no ip address
+ shutdown 
+!         
+interface Vlan99
+ ip address 10.20.99.2 255.255.255.0
+!         
+ip default-gateway 10.20.99.1
+ip forward-protocol nd
+!         
+ip http server
+!         
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!         
+!         arp access-list ARP-STATIQUE
+ permit ip host 10.20.40.10 mac host 0050.7966.6808 
+arp access-list ARP_STATIQUE
+ permit ip host 10.20.40.10 mac host 0050.7966.6808 
+!         
+!         
+!         
+!         
+control-plane
+!         
+banner exec ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner incoming ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner login ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, dem
+ Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+!         
+line con 0
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+!         
+!         
+end       
